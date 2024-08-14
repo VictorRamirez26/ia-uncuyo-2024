@@ -144,4 +144,32 @@ El éxito de la IA podría suponer un riesgo para la humanidad, como en la narra
 - **Derechos de los Robots**:
 Si los robots se vuelven conscientes, tratarles como meras máquinas podría ser inmoral. La ciencia ficción explora la posibilidad de derechos para robots y el impacto de su integración en la sociedad.
 
+## Opinión personal
 
+En mi opinión, la IA actual esta estancada dentro de la categoría de IA débil, ya que las computadoras carecen de la capacidad de pensar de manera autónoma (Solo simulan el pensamiento). También pienso que con la tecnología actual, no es viable la existencia de una IA fuerte ya que según el libro, no sería posible replicar la conciencia o la inteligencia humana cuando ni siquiera comprendemos completamente su funcionamiento.
+
+En cuanto a los temas de ética y riesgos, los problemas planteados tienen bastante sentido, yo también creo que va a llevar a una gran tasa de desempleo en tareas que son automatizables, pero a su vez esto creará nuevos trabajos que antes no existían, como suele ocurrir cuando hay un gran cambio tecnológico, por ejemplo la Revolución Industrial. También creo el mal uso de la IA es casi inevitable, ya que está al alcance de todos y aplicar regulaciones seria bastante complicado, inclusive las empresas grandes podrían hacer un uso "poco ético" de estas si esto les tráe un beneficio económico (En mi opinión muchas ya lo hacen).
+
+# Ejercicio 2
+
+## ¿Es posible considerar a los agentes conversacionales basados en grandes modelos de lenguaje (LLMs) como conscientes?
+
+Según el texto, considerar a los LLMs como conscientes es una cuestión compleja, ya que el texto nos indica que aunque estos agentes pueden replicar comportamientos muy similares a los humanos y pueden llegar a ser percibidos por los humanos como conscientes, esto no significa  que lo sean. 
+
+A pesar de su comportamiento, los LLMs solo "simulan" la conciencia humana sin tener una verdadera consciencia. Según el texto estos pueden tomar múltiples roles o personalidades ya que tendría su propio "multiverso" de posibilidades y esto nos llevaría a tener que redefinir la definición de "consciencia", pero aún asi solo imitarían un comportamiento consciente.
+
+## ¿Cuáles son las implicaciones éticas de atribuir conciencia y, por ende, "derechos morales" a los agentes de IA avanzados? 
+
+Una de las preocupaciones que se menciona en el texto es que una sociedad puede llegar a considerar a estos agentes como "conscientes" y se podría empezar a priorizar su bienestar por encima del de otros seres humanos. Esto podría llevar a una cuestión ética compleja en el que los derechos y el bienestar de las personas se vean comprometidos en favor de máquinas que solo imitan la conciencia.
+
+El texto también menciona que las relaciones entre los humanos podría verse afectada por estos agentes ya que los humanos podrían preferir la compañía de estos agente por encima de otras personas, lo cual nos podría llevar a un mayor grado de aislamiento social.
+
+# Ejercicio 3
+
+En mi opinión, siento que los comentarios en este articulo tienen una visión sesgada, si bien coincido en algunos puntos como la analogía de las dos islas, el pulpo y la limitación de la IA generativa en cuanto a su acceso al "mundo real" (haciendo referencia a la falta de contexto), creo que en un futuro, esta falta de contexto se verá reducida debido a la gran cantidad de información que hay en internet actualmente sobre el "mundo real".
+
+Tammbién creo que la gente hace un uso indebido de la IA en algunas ocasiones, ya que toman lo que esta genera como una fuente de verdad, sin verificar la información en otros lugares, lo cual lleva a la gente a creer en las teorías conspirativas que esta puede generar, tal como se habla en el texto, pero esto no es un problema de la IA sino del uso indebido de la gente.
+
+Con respecto a las fuentes de información de las cuales de alimenta estos modelos de IA (menciona racismo,sexismo,neonazimos,etc), yo creo que también se debe recopilar información de estos lugares, pero con un correcto proceso de filtrado o "curación" de los datos que nos permita extraer un verdadero valor incluso de fuentes que contengan discursos de odio.
+
+También creo que la IA en lugar de reemplazar a los humanos, puede ser una herramienta para potenciar la creatividad, nos puede servir como una fuente de inspiración y también para un aprendizaje más personalizado.
