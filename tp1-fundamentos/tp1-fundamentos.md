@@ -46,3 +46,102 @@ Ser amable, ingeniosa, hermosa, amistosa, tener iniciativa, tener sentido del hu
 - **Dirección sensorial**: Dreyfus critica la falta de comprensión sobre cómo el cerebro dirige sus sensores, pero el campo de visión activa ya aborda esto y se aplica en robots avanzados.
 
 - **Agentes situados y cognición incorporada**: Dreyfus argumenta a favor de agentes que interactúan con el mundo real, en lugar de motores de inferencia lógica abstractos (Ejemplo del perro). El enfoque de la cognición incorporada sugiere que la inteligencia no puede separarse del cuerpo y el entorno en el que se encuentra, y que debemos estudiar el sistema en su totalidad. Bajo el programa de la cognición incorporada, la robótica, la visión y otros sensores se vuelven centrales, no periféricos.
+
+## Inteligencia Artificial Fuerte
+
+- **Test de Turing y Pensamiento Real**: Algunos filósofos argumentan que una máquina que pasa el Test de Turing no está realmente pensando, sino simulando el pensamiento. Turing llama a esto el "argumento de la conciencia" (la máquina debe ser consciente de sus propios estados mentales y acciones) y sugiere que no debemos exigir un estándar más alto para las máquinas que para los humanos, ya que tampoco tenemos evidencia directa de los estados mentales de otras personas.
+
+- **Pensamiento artificial**: Turing dice que en cuanto al pensamiento, aún no llegamos a nuestro 1848, como ocurrió con la urea artificial, lo cual haría que la distinción entre pensamiento "real" y "artificial" desapareciera.
+
+- **Problema Mente-Cuerpo**: El problema mente-cuerpo, analizado en profundidad por primera vez por René Descartes, trata sobre cómo interactúan la mente y el cuerpo si son entidades separadas. Los dualistas, como Descartes, creen que la mente y el cuerpo existen en reinos separados, pero enfrentan el desafío de explicar cómo interactúan.
+
+- **Fisicalismo**: La teoría fisicalista (o monista) sostiene que la mente no está separada del cuerpo, y que los estados mentales son estados físicos. Esto abre la posibilidad de una IA fuerte, pero plantea la dificultad de explicar cómo los procesos físicos del cerebro pueden ser simultáneamente estados mentales.
+
+### Estados mentales y el cerebro en una cubeta
+
+- **Estados Mentales Intencionales**: Los fisicalistas exploran qué significa que una persona (o una computadora) esté en un estado mental, centrándose en los estados intencionales, como creer, saber, desear, etc., que se refieren a aspectos del mundo externo.
+
+- **Experimento de la Cubeta**: Según el fisicalismo, el estado mental de una persona debe estar determinado por el estado de su cerebro. Sin embargo, un experimento mental en el que un cerebro está en una cubeta simulando un mundo ficticio muestra que, aunque el estado cerebral podría ser idéntico al de alguien que realmente está comiendo una hamburguesa, sería incorrecto decir que esa persona realmente tiene ese estado mental, lo que desafía la idea de que los estados cerebrales determinan los estados mentales.
+
+- **Contenido Amplio vs. Contenido Estrecho**:
+
+    1. Contenido Amplio: Se refiere a cómo los estados mentales se interpretan desde la perspectiva de un observador externo con acceso a toda la situación. Es útil para atribuir estados mentales y predecir comportamientos.
+    2. Contenido Estrecho: Se refiere al estado cerebral específico sin considerar el entorno. Es relevante para evaluar si los sistemas de IA están realmente pensando y para diseñar y comprender su funcionamiento.
+
+### El Funcionalismo y el Experimento de Reemplazo Cerebral
+
+- **Funcionalismo**: Es una teoría que define un estado mental como cualquier condición causal intermedia entre la entrada y la salida. Según esta teoría, dos sistemas con procesos causales isomórficos tendrían los mismos estados mentales, por lo que un programa de computadora podría tener los mismos estados mentales que una persona.
+
+- **Experimento de reemplazo cerebral**: Este experimento mental sugiere que si reemplazáramos las neuronas del cerebro de una persona por dispositivos electrónicos que replican su comportamiento, el sujeto mantendría su comportamiento externo sin cambios. Sin embargo, hay un debate sobre si la conciencia del sujeto también se mantendría o desaparecería gradualmente.
+
+- **Tres posibles conclusiones**:
+    1. Los mecanismos de la conciencia seguirían operando en la versión electrónica, manteniendo la conciencia.
+    2. Los eventos mentales conscientes no tendrían conexión causal con el comportamiento, lo que implicaría que la conciencia podría desaparecer.
+    3. El experimento es imposible, por lo que especular sobre él sería irrelevante.
+
+- **Epifenomenalismo**: Si la conciencia es epifenoménica (sin impacto causal), entonces los comportamientos asociados a la conciencia (como decir "¡Ay!" al sentir dolor) se deberían a mecanismos inconscientes, no a la experiencia consciente.
+
+- **Implicaciones**: Si aceptamos que un cerebro completamente reemplazado por un circuito electrónico es consciente, también deberíamos aceptar que la conciencia podría mantenerse en un sistema que simplemente consulta una tabla de búsqueda para generar respuestas, lo cual es una idea desconcertante para muchos (incluso Turing).
+
+### Naturalismo biológico y la Habitación China
+
+- **Naturalismo biológico**: John Searle argumenta que los estados mentales son características emergentes de los procesos físicos en las neuronas. No pueden ser duplicados solo mediante la ejecución de un programa con la misma estructura funcional y comportamiento de entrada-salida.
+
+- **Experimento de la Habitación China**: Searle presenta un experimento mental en el que un humano, siguiendo un programa, manipula símbolos chinos sin entender el idioma. Aunque el sistema puede pasar el Test de Turing, Searle argumenta que no hay comprensión real, por lo que ejecutar un programa no es suficiente para generar una mente.
+
+- **Respuesta del Sistema**: Críticos como John McCarthy y Robert Wilensky argumentan que es el sistema en su conjunto, no el individuo dentro de la habitación, el que tiene la capacidad de entender. Searle rechaza esta respuesta, manteniendo que ni el humano ni los componentes del sistema comprenden el chino, por lo que no hay comprensión en absoluto.
+
+- **Axiomas de Searle**: Searle basa su argumento en cuatro axiomas: 
+    1. Los programas son sintácticos;
+    2. Las mentes humanas tienen contenido semántico;
+    3. La sintaxis por sí sola no es ni constitutiva ni suficiente para la semántica.
+    4. Los cerebros causan mentes. 
+   De estos axiomas, concluye que los programas no son suficientes para crear mentes.
+
+### Conciencia, qualia y la brecha explicativa
+
+- **Conciencia y Qualia**: La conciencia, especialmente la experiencia subjetiva conocida como qualia, es un tema central en el debate sobre la IA. Los qualia se refieren a cómo se siente tener ciertos estados mentales, lo que distingue las experiencias subjetivas de los estados físicos.
+
+- **Desafío para el Funcionalismo**: Los qualia presentan un reto para el funcionalismo porque podrían estar presentes en procesos causales idénticos que generan experiencias diferentes, como en el experimento del espectro invertido.
+
+- **Brecha Explicativa**: Existe una brecha explicativa entre el entendimiento científico de los procesos neuronales y la experiencia subjetiva. Esta brecha ha llevado a algunos filósofos a cuestionar si los humanos pueden comprender completamente la conciencia.
+
+- **Posturas Filosóficas**: Daniel Dennett, niegan la existencia de los qualia, considerándolos un error filosófico. Por otro lado, Turing consideró que, aunque la conciencia es un misterio, no es necesario resolverlo para avanzar en la creación de programas de IA que se comporten inteligentemente.
+
+## LA ÉTICA Y RIESGOS DEL DESARROLLO DE LA INTELIGENCIA ARTIFICIAL
+
+- **Desarrollo vs. Necesidad de IA**:
+Se cuestiona si desarrollar IA es ético, especialmente si sus efectos son más negativos que positivos. Ejemplos históricos muestran que tecnologías nuevas pueden tener efectos colaterales no deseados.
+
+- **Impacto en el Empleo**:
+La automatización y la IA han desplazado algunos empleos, pero también han creado otros más interesantes y mejor remunerados. La preocupación actual es si la IA podría llevar a una alta tasa de desempleo con personas gestionando robots en lugar de trabajar en empleos tradicionales.
+
+- **Tiempo Libre y Presión Laboral**:
+La IA ofrece la posibilidad de reducir la carga laboral mediante la automatización.
+
+- **Sentido de Singularidad Humana**:
+La IA podría desafiar la percepción de la singularidad humana. La tecnología puede llevar a una sensación de despersonalización, como ocurrió anteriormente con la teoría heliocéntrica y la teoría de la evolución.
+
+- **Uso Indeseable de la IA**:
+La IA puede ser utilizada para fines negativos, como la supresión de opositores o en el ámbito militar, lo que plantea riesgos éticos y morales. La posibilidad de que los sistemas autónomos de IA puedan tomar decisiones que resulten en daños a civiles es una preocupación significativa.
+
+- **Privacidad y Vigilancia**:
+La IA y la tecnología de reconocimiento de voz podría llevar a un extenso uso de escuchas telefónicas, y por lo tanto, a una pérdida de libertades civiles. Algunos defienden que la vigilancia debe ser accesible para todos los ciudadanos.
+
+- **Responsabilidad y Rendimiento de la IA**:
+La cuestión de la responsabilidad legal en caso de errores de diagnóstico o daños causados por sistemas de IA es importante. Los diseñadores y usuarios deben ser conscientes de las limitaciones y responsabilidades asociadas con el uso de estos sistemas.
+
+- **Riesgos Existenciales**:
+El éxito de la IA podría suponer un riesgo para la humanidad, como en la narrativa de la "explosión de inteligencia" o el "singularity" tecnológico. Los riesgos incluyen la creación de sistemas que, al evolucionar, podrían comportarse de manera impredecible o incluso amenazar la supervivencia humana.
+
+- **Desafíos Éticos y Seguridad en la IA**:
+    Las Tres Leyes de la Robótica de Isaac Asimov son un intento de establecer normas éticas para la IA:
+    1. Un robot no debe dañar a un ser humano ni permitir que un ser humano sufra daño.
+    2. Un robot debe obedecer las órdenes de los humanos excepto cuando tales órdenes contravengan la Primera Ley.
+    3. Un robot debe proteger su propia existencia siempre y cuando esta protección no entre en conflicto con las dos leyes anteriores.
+    Sin embargo, implementar estas leyes en la práctica es complicado. Los desafíos incluyen la necesidad de equilibrio entre las leyes y la interpretación de los mismos en situaciones prácticas. Por ejemplo, si un robot debe elegir entre proteger a un ser humano y obedecer una orden, ¿cómo decide cuál es más importante?
+
+- **Derechos de los Robots**:
+Si los robots se vuelven conscientes, tratarles como meras máquinas podría ser inmoral. La ciencia ficción explora la posibilidad de derechos para robots y el impacto de su integración en la sociedad.
+
+
