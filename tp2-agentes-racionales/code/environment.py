@@ -22,6 +22,9 @@ class Environment:
         if self.grid[posX][posY] == 1:
             return True
         
+    def get_dirty(self):
+        return self.dirty
+        
     def print_environment(self):
         # Imprimo la matriz (entorno)
         for row in self.grid:
@@ -44,7 +47,7 @@ class Environment:
             return (0 <= new_x < self.sizeX) and (0 <= new_y < self.sizeY)
         
         elif action == "Limpiar":
-            if self.isDirty(x, y):
+            if self.is_dirty(x, y):
                 self.grid[x][y] = 0
                 self.dirty -= 1
                 return True
@@ -52,6 +55,3 @@ class Environment:
         
         return False   
 
-
-    def get_performance(self): # Es mejor q dependa del agente y no del entorno
-        return

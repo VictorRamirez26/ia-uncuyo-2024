@@ -3,8 +3,8 @@ import random
 class Agent(ABC):
     def __init__(self,env): # recibe como parametro un objeto de la clase Environment
         self.env = env
-        self.posX = random.randint(0,self.env.posX-1)
-        self.posY = random.randint(0,self.env.posY-1)
+        self.posX = random.randint(0,self.env.sizeX - 1)
+        self.posY = random.randint(0,self.env.sizeY - 1)
         self.performance = 0 # Cantidad de casillas limpiadas
         self.mov = 1000 # Cantidad de acciones iniciales
         
@@ -33,8 +33,6 @@ class Agent(ABC):
     def idle(self): # no hace nada
         return
     
-    def perspective(self,env): # sensa el entorno
-        return
     
     @abstractmethod
     def think(self):
