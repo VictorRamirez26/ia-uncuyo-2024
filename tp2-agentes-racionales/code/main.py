@@ -1,36 +1,45 @@
 import agente as a
-import agenteReflexivo as ar
+import agenteReflexivo as arf
+import agenteRandom as arnm
 import environment as e
 import pandas as pd
+import random
+import matplotlib.pyplot as plt
+import lib_analisis as la
 
 # Definimos los tamaños y los porcentajes de suciedad
 sizes = [2, 4, 8, 16, 32, 64, 128]
 dirty_rates = [0.1, 0.2, 0.4, 0.8]
 
-# Lista para almacenar los resultados
-results = []
+# Convierto los resultados a DataFrames de pandas
+results = la.resultados_agentes(sizes,dirty_rates)
+df_reflexivo = pd.DataFrame(results[0])
+df_random = pd.DataFrame(results[1])
 
-# Bucle para cada combinación de tamaño y porcentaje de suciedad
+# Guardo los resultados en archivos Excel separados
+df_reflexivo.to_excel('C:/Users/victo/Desktop/Inteligencia Artificial/tp2-agentes-racionales/code/agente_reflexivo_resultados.xlsx', index=False)
+df_random.to_excel('C:/Users/victo/Desktop/Inteligencia Artificial/tp2-agentes-racionales/code/agente_random_resultados.xlsx', index=False)
+
+print("Los archivos Excel han sido generados exitosamente.")
+
+
+# Cargar los datos desde los archivos Excel
+df_reflexivo = pd.read_excel('C:/Users/victo/Desktop/Inteligencia Artificial/tp2-agentes-racionales/code/agente_reflexivo_resultados.xlsx')
+df_random = pd.read_excel('C:/Users/victo/Desktop/Inteligencia Artificial/tp2-agentes-racionales/code/agente_random_resultados.xlsx')
+
+
+
 for size in sizes:
-    for rate in dirty_rates:
-        for _ in range(10):  # Repetimos 10 veces cada combinación
-            entorno = e.Environment(size, size, rate)
-            agenteReflexivo = ar.AgenteReflexivo(entorno)
-            result = agenteReflexivo.think()  # Tupla con (performance , necessaryMoves)
-            
-            # Agregamos el resultado a la lista
-            results.append({
-                'Size': f'{size}x{size}',
-                'Dirty Rate': rate,
-                'Performance': result[0],
-                'Necessary Moves': result[1]
-            })
-
-# Convierto los resultados a un DataFrame de pandas
-df = pd.DataFrame(results)
-
-# Guardo los resultados en un archivo Excel
-df.to_excel('C:/Users/victo/Desktop/Inteligencia Artificial/tp2-agentes-racionales/code/agente_reflexivo_resultados.xlsx', index=False)
-
-
-print("El archivo Excel ha sido generado exitosamente.")
+    resultados = la.performance_promedio(df_reflexivo, df_random, f'{size}x{size}', dirty_rates)
+    
+    plt.plot(dirty_rates, resultados[0], label='Agente Reflexivo', marker='o', linestyle='--')
+    plt.plot(dirty_rates, resultados[1], label='Agente Random', marker='o', linestyle='--')
+    
+    plt.title(f'Comparación de Performance para entorno {size}x{size}')
+    plt.xlabel('Porcentaje de suciedad')
+    plt.ylabel('Performance promedio')
+    plt.legend()
+    plt.grid(True)
+    
+    # Muestra el gráfico para el tamaño actual
+    plt.show()
