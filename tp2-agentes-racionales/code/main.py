@@ -29,7 +29,6 @@ df_random.to_excel('C:/Users/victo/Desktop/Inteligencia Artificial/tp2-agentes-r
 df_reflexivo = pd.read_excel('agente_reflexivo_resultados.xlsx')
 df_random = pd.read_excel('agente_random_resultados.xlsx')
 
-
 #la.graficos_performance_entorno(df_reflexivo,df_random,dirty_rates,sizes)
 #la.graficos_performance_dirtyRate(df_reflexivo,df_random,dirty_rates,sizes)
 #la.graficos_moves_entorno(df_reflexivo,df_random,dirty_rates,sizes)
