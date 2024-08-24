@@ -34,29 +34,29 @@ El rendimiento de cada agente se evaluó según la cantidad de celdas limpiadas 
 
 Para el análisis, lo primero que se realizo fueron los graficos de la performance promedio de cada agente según su entorno y el porcentaje de suciedad. 
 
-![Imagen 1](../images/Performance_10%_suciedad.png)
-![Imagen 2](../images/Performance_20%_suciedad.png)
-![Imagen 3](../images/Performance_40%_suciedad.png)
-![Imagen 4](../images/Performance_80%_suciedad.png)
+![Imagen 1](./images/Performance_10%_suciedad.png)
+![Imagen 2](./images/Performance_20%_suciedad.png)
+![Imagen 3](./images/Performance_40%_suciedad.png)
+![Imagen 4](./images/Performance_80%_suciedad.png)
 
 A partir de los gráficos podemos notar que la performances promedios alcanzadas por ambos agentes en los entornos 2x2 y 4x4 son iguales, pero a partir del entorno 8x8 en adelante, no importa que porcentaje de suciedad tenga el entorno, el agente reflexivo simple siempre tiene una performance promedio mucho mejor frente al agente random. 
 
 Decidí analizar si realmente la performance en los entornos 2x2 y 4x4 son realmente iguales, para ello, analice estos entornos mas en detalle frente a todos los porcentajes de suciedad.
 
-![Imagen 5](../images/Performance_entorno_2x2.png)
-![Imagen 6](../images/Performance_entorno_4x4.png)
+![Imagen 5](./images/Performance_entorno_2x2.png)
+![Imagen 6](./images/Performance_entorno_4x4.png)
 
 Como se puede apreciar, ambos agentes tiene el mismo rendimiento en estos entornos, pero eso no significa que sean igual de eficientes.
 
 Para profundizar esta idea de que ambos agentes tienen distinto desempeño en entornos pequeños, procedí a graficar la cantidad de movimientos que le llevo a cada agente llegar a su performance máxima (en caso de haber llegado).
 
-![Imagen 7](../images/Moves_10%_suciedad.png)
+![Imagen 7](./images/Moves_10%_suciedad.png)
 
 Como se puede observar, para el entorno 2x2, ambos llegaron a su máxima performance en 0 acciones, esto de debe a que en un entorno 2x2 con 10% de suciedad no hay casilleros sucios, pero en el caso del entorno 4x4 con 10% de suciedad vemos que al Agente reflexivo simple le toma menos de 400 acciones limpiar el entorno mientras que al Agente random le toma aproximadamente 500 acciones. Esto nos indica que por más que ambos agentes pueden limpiar el entorno, el agente reflexivo lo hace con menos cantidad de acciones.
 
 También podemos analizar algunos casos particulares con los gráficos de cajas y extensiones
 
-![Imagen 8](../images/Grafico_extensiones_80%_suciedad.png)
+![Imagen 8](./images/Grafico_extensiones_80%_suciedad.png)
 
 Podemos ver que para el Agente reflexivo, la caja es más amplia en los entornos más grandes, lo que nos indica una mayor variabilidad en su performance. Para el Agente Random, la caja es generalmente más pequeña y se mantiene constante, indicando que la variabilidad en su performance es baja y que su capacidad para limpiar es bastante limitada en todos los entornos.
 
