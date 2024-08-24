@@ -11,6 +11,8 @@ import lib_analisis as la
 sizes = [2, 4, 8, 16, 32, 64, 128]
 dirty_rates = [0.1, 0.2, 0.4, 0.8]
 
+# Para generar nuevos resultados descomentar las siguientes lineas:
+"""
 # Convierto los resultados a DataFrames de pandas
 results = la.resultados_agentes(sizes,dirty_rates)
 df_reflexivo = pd.DataFrame(results[0])
@@ -19,27 +21,16 @@ df_random = pd.DataFrame(results[1])
 # Guardo los resultados en archivos Excel separados
 df_reflexivo.to_excel('C:/Users/victo/Desktop/Inteligencia Artificial/tp2-agentes-racionales/code/agente_reflexivo_resultados.xlsx', index=False)
 df_random.to_excel('C:/Users/victo/Desktop/Inteligencia Artificial/tp2-agentes-racionales/code/agente_random_resultados.xlsx', index=False)
-
-print("Los archivos Excel han sido generados exitosamente.")
+#print("Los archivos Excel han sido generados exitosamente.")
+"""
 
 
 # Cargar los datos desde los archivos Excel
-df_reflexivo = pd.read_excel('C:/Users/victo/Desktop/Inteligencia Artificial/tp2-agentes-racionales/code/agente_reflexivo_resultados.xlsx')
-df_random = pd.read_excel('C:/Users/victo/Desktop/Inteligencia Artificial/tp2-agentes-racionales/code/agente_random_resultados.xlsx')
+df_reflexivo = pd.read_excel('agente_reflexivo_resultados.xlsx')
+df_random = pd.read_excel('agente_random_resultados.xlsx')
 
 
-
-for size in sizes:
-    resultados = la.performance_promedio(df_reflexivo, df_random, f'{size}x{size}', dirty_rates)
-    
-    plt.plot(dirty_rates, resultados[0], label='Agente Reflexivo', marker='o', linestyle='--')
-    plt.plot(dirty_rates, resultados[1], label='Agente Random', marker='o', linestyle='--')
-    
-    plt.title(f'Comparación de Performance para entorno {size}x{size}')
-    plt.xlabel('Porcentaje de suciedad')
-    plt.ylabel('Performance promedio')
-    plt.legend()
-    plt.grid(True)
-    
-    # Muestra el gráfico para el tamaño actual
-    plt.show()
+#la.graficos_performance_entorno(df_reflexivo,df_random,dirty_rates,sizes)
+#la.graficos_performance_dirtyRate(df_reflexivo,df_random,dirty_rates,sizes)
+#la.graficos_moves_entorno(df_reflexivo,df_random,dirty_rates,sizes)
+#la.grafico_caja_extensiones(df_reflexivo,df_random,dirty_rates)
