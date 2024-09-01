@@ -1,9 +1,9 @@
 import gymnasium as gym
 import map as map
 import random
-
-# Algunos buenas seeds: 394375604 , 740166210 , 363178760 , 652117772 , 970737619
-seed = random.randint(0,1000000000)
+import algorithms as algo
+# Algunos buenas seeds: 394375604 , 740166210 , 363178760 , 652117772 , 970737619, 158555495, 272572490
+seed = 740166210
 print(seed)
 random.seed(seed)
 
@@ -14,7 +14,8 @@ end = (random.randint(0,size-1),random.randint(0,size-1))
 
 e = map.Map(size, p_hole, start , end)  
 env = e.env  # Me quedo con el entorno
-steps = e.bfs(e.grid, e.start, e.end)
+steps = algo.Algorithm.bfs(e.grid, e.start, e.end)
+#steps = algo.Algorithm.dfs(e.grid, e.start, e.end)
 
 # Información sobre el entorno
 print("Número de estados:", env.observation_space.n)
