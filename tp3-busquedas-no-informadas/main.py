@@ -2,19 +2,33 @@ import gymnasium as gym
 import map as map
 import random
 import algorithms as algo
-# Algunos buenas seeds: 394375604 , 740166210 , 363178760 , 652117772 , 970737619, 158555495, 272572490
-seed = 394375604
+import lib_analisis as la
+# Algunos buenas seeds: 394375604 , 740166210 , 363178760 , 652117772 , 970737619, 158555495, 272572490, 23123578
+seed = 652117772
 print(seed)
 random.seed(seed)
 
-size = 20
+# Creo el entorno, la posicion inicial del agente y el objetivo
+size = 30
 p_hole = 0.08
 start = (random.randint(0,size-1),random.randint(0,size-1))
 end = (random.randint(0,size-1),random.randint(0,size-1))
-
 e = map.Map(size, p_hole, start , end)  
 env = e.env  # Me quedo con el entorno
-steps = algo.Algorithm.ucs(e.grid, e.start, e.end)
+
+# Aplico los algoritmos
+steps_bfs = algo.Algorithm.bfs(e.grid, e.start, e.end)
+#steps_dfs = algo.Algorithm.dfs(e.grid, e.start, e.end)
+#steps_dls = algo.Algorithm.dfs_limited(e.grid, e.start, e.end,100)
+#steps_ucs_e1 = algo.Algorithm.ucs_c1(e.grid, e.start, e.end)
+steps_ucs_e2 = algo.Algorithm.ucs_c2(e.grid, e.start, e.end)
+
+print(la.calculate_cost(steps_bfs))
+#print(la.calculate_cost(steps_dfs))
+#print(la.calculate_cost(steps_dls))
+#print(la.calculate_cost(steps_ucs_e1))
+print(la.calculate_cost(steps_ucs_e2))
+
 
 # Información sobre el entorno
 print("Número de estados:", env.observation_space.n)
@@ -24,37 +38,9 @@ print("Número de acciones:", env.action_space.n)
 state = env.reset()
 print("Posición inicial del agente:", state[0])
 
-# Diccionario para traducir movimientos a acciones en el entorno
-direction_to_action = {
-    (0, -1): 0,  # Izquierda
-    (1, 0): 1,   # Abajo
-    (0, 1): 2,   # Derecha
-    (-1, 0): 3  # Arriba
-}
 
-# Simulación usando steps
-done = truncated = False
-step_count = 0
+#la.iniciarEnv(env , steps_bfs)
+#la.iniciarEnv(env , steps_dfs)
+#la.iniciarEnv(env , steps_dls)
+#la.iniciarEnv(env,steps_ucs_e2)
 
-print(len(steps))
-for i in range(len(steps) - 1):
-    current_pos = steps[i]
-    next_pos = steps[i + 1]
-    # Calcular la dirección del movimiento (Izq,Abajo,Derecha,Arriba)
-    move = (next_pos[0] - current_pos[0], next_pos[1] - current_pos[1])
-    # Obtener la acción correspondiente
-    action = direction_to_action.get(move)
-    
-    if action is not None:
-        next_state, reward, done, truncated, _ = env.step(action)
-        print(f"Paso {step_count}: Acción: {action}, Nuevo estado: {next_state}, Recompensa: {reward}")
-        print(f"¿Ganó? (encontró el objetivo): {done}")
-        print(f"¿Frenó? (alcanzó el máximo de pasos posible): {truncated}\n")
-        state = next_state
-        step_count += 1
-        
-    if done:
-        break
-
-# Cerrar el entorno al finalizar
-env.close()

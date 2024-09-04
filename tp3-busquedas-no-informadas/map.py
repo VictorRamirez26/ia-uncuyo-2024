@@ -1,6 +1,4 @@
 import gymnasium as gym
-import numpy as np
-from collections import deque
 import random
 
 class Map():
