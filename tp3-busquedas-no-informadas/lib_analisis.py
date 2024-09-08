@@ -1,4 +1,10 @@
-
+import gymnasium as gym
+import map as map
+import random
+import algorithms as algo
+import lib_analisis as la
+import pandas as pd
+import time
 
 def iniciarEnv(env, steps):
 
@@ -77,3 +83,67 @@ def calculate_cost(path):
         cost_weighted += direction_to_cost.get(move, 0)  # Costo específico de la dirección
 
     return cost_uniform, cost_weighted
+
+def init_algorithms():
+    # Inicializar listas para almacenar resultados
+    results = []
+
+    # Realizar 30 simulaciones
+    for simulation in range(30):
+        # Generar seed aleatoria
+        seed = random.randint(0, 1_000_000_000)
+        print(f"Simulación {simulation + 1}, Seed: {seed}")
+        random.seed(seed)
+
+        # Crear el entorno, la posición inicial del agente y el objetivo
+        size = 100
+        p_hole = 0.08
+        start = (random.randint(0, size - 1), random.randint(0, size - 1))
+        end = (random.randint(0, size - 1), random.randint(0, size - 1))
+        e = map.Map(size, p_hole, start, end)
+
+        # Diccionario para almacenar resultados por simulación
+        simul_result = {
+            "seed": seed
+        }
+
+        # Aplicar los algoritmos
+        for algo_name, algorithm in {
+            "BFS": algo.Algorithm.bfs,
+            "DFS": algo.Algorithm.dfs,
+            "DLS": lambda g, s, e: algo.Algorithm.dfs_limited(g, s, e, 100),
+            "UCS E1": algo.Algorithm.ucs_c1,
+            "UCS E2": algo.Algorithm.ucs_c2,
+            "A star": algo.Algorithm.a_star,
+        }.items():
+            # Medir el tiempo de ejecución
+            start_time = time.time()
+            
+            # Ejecutar el algoritmo
+            steps, num_states = algorithm(e.grid, e.start, e.end)
+            
+            # Medir el tiempo final
+            end_time = time.time()
+            
+            # Calcular el tiempo de ejecución
+            execution_time = end_time - start_time
+
+            # Calcular el costo
+            cost_1, cost_2 = la.calculate_cost(steps)
+            
+            # Comprobar si se encontró la solución
+            found_solution = e.end in steps if steps else False
+            
+            
+            # Guardar resultados
+            simul_result["algorithm"] = algo_name
+            simul_result["num_states"] = num_states
+            simul_result["cost_e1"] = cost_1
+            simul_result["cost_e2"] = cost_2
+            simul_result["found_solution"] = found_solution
+            simul_result["execution_time"] = execution_time  # Agregar el tiempo de ejecución
+
+            # Agregar el resultado de esta simulación a la lista
+            results.append(simul_result.copy())
+
+    return results
