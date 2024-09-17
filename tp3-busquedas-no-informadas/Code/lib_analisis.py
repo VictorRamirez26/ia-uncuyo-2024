@@ -1,10 +1,13 @@
 import gymnasium as gym
 import map as map
+import matplotlib.pyplot as plt
+import seaborn as sns
 import random
 import algorithms as algo
 import lib_analisis as la
 import pandas as pd
 import time
+
 
 def iniciarEnv(env, steps):
 
@@ -59,7 +62,7 @@ def calculate_cost(path):
         - Costo con izquierda = 1, abajo = 2, derecha = 3 y arriba = 4.
     """
 
-    if path is None: 
+    if path is None or len(path) > 1000: 
         return 0,0
     
     # Direcciones de movimiento con su respectivo costo
@@ -109,16 +112,15 @@ def init_algorithms():
 
         # Aplicar los algoritmos
         for algo_name, algorithm in {
-            "BFS": algo.Algorithm.bfs,
-            "DFS": algo.Algorithm.dfs,
-            "DLS": lambda g, s, e: algo.Algorithm.dfs_limited(g, s, e, 100),
-            "UCS E1": algo.Algorithm.ucs_c1,
-            "UCS E2": algo.Algorithm.ucs_c2,
-            "A star": algo.Algorithm.a_star,
+            "BFS": algo.bfs,
+            "DFS": algo.dfs,
+            "DLS": lambda g, s, e: algo.dfs_limited(g, s, e, 10),
+            "UCS E1": algo.ucs_c1,
+            "UCS E2": algo.ucs_c2,
+            "A star": algo.a_star,
         }.items():
             # Medir el tiempo de ejecución
             start_time = time.time()
-            
             # Ejecutar el algoritmo
             steps, num_states = algorithm(e.grid, e.start, e.end)
             
@@ -132,9 +134,11 @@ def init_algorithms():
             cost_1, cost_2 = la.calculate_cost(steps)
             
             # Comprobar si se encontró la solución
-            found_solution = e.end in steps if steps else False
-            
-            
+            if steps is None or len(steps) >= 1000:
+                found_solution = False
+            else:
+                found_solution = True
+                
             # Guardar resultados
             simul_result["algorithm"] = algo_name
             simul_result["num_states"] = num_states
@@ -147,3 +151,93 @@ def init_algorithms():
             results.append(simul_result.copy())
 
     return results
+
+def box_states(results):
+
+    # Crear el gráfico de cajas
+    plt.figure(figsize=(10, 6))
+    sns.boxplot(x='algorithm', y='num_states', data=results)
+
+    # Configurar el gráfico
+    plt.title('Comparación de número de estados visitados por algoritmo')
+    plt.xlabel('Algoritmo')
+    plt.ylabel('Número de estados')
+    plt.xticks(rotation=45)
+    
+    # Mostrar el gráfico
+    plt.tight_layout()
+    plt.show()
+
+
+def box_cost_e1(results):
+
+    # Filtrar los resultados para excluir los valores de 'cost_e1' que sean 0
+    filtered_results = results[results["found_solution"] == True]
+    
+    # Crear el gráfico de cajas
+    plt.figure(figsize=(10, 6))
+    sns.boxplot(x='algorithm', y='cost_e1', data=filtered_results)
+
+    # Configurar el gráfico
+    plt.title('Comparación de cost_e1 por algoritmo (sin valores de cost_e1 = 0)')
+    plt.xlabel('Algoritmo')
+    plt.ylabel('Cost E1')
+    plt.xticks(rotation=45)
+    
+    # Mostrar el gráfico
+    plt.tight_layout()
+    plt.show()
+
+
+def box_cost_e2(results):
+
+    filtered_results = results[results["found_solution"] == True]
+    # Crear el gráfico de cajas
+    plt.figure(figsize=(10, 6))
+    sns.boxplot(x='algorithm', y='cost_e2', data=filtered_results)
+
+    # Configurar el gráfico
+    plt.title('Comparación de cost_e2 por algoritmo')
+    plt.xlabel('Algoritmo')
+    plt.ylabel('Cost E2')
+    plt.xticks(rotation=45)
+    
+    # Mostrar el gráfico
+    plt.tight_layout()
+    plt.show()
+
+def box_times(results):
+
+    # Crear el gráfico de cajas
+    filtered_results = results[results["found_solution"] == True]
+    plt.figure(figsize=(10, 6))
+    sns.boxplot(x='algorithm', y='execution_time', data=filtered_results)
+
+    # Configurar el gráfico
+    plt.title('Comparación de execution_time por algoritmo')
+    plt.xlabel('Algoritmo')
+    plt.ylabel('execution_time')
+    plt.xticks(rotation=45)
+    
+    # Mostrar el gráfico
+    plt.tight_layout()
+    plt.show()
+
+def plot_solution_counts(results):
+
+    # Filtrar las filas donde se encontró la solución
+    solution_counts = results[results["found_solution"] == True].groupby("algorithm").size()
+
+    # Crear un gráfico de barras
+    plt.figure(figsize=(10, 6))
+    solution_counts.plot(kind='bar', color='skyblue')
+
+    # Configurar el gráfico
+    plt.title('Cantidad de soluciones encontradas por cada algoritmo')
+    plt.xlabel('Algoritmo')
+    plt.ylabel('Cantidad de soluciones')
+    plt.xticks(rotation=45)
+    
+    # Mostrar el gráfico
+    plt.tight_layout()
+    plt.show()
