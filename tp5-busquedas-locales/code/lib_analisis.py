@@ -1,7 +1,7 @@
 import time
 import math
 import tablero
-import hill_climbing as hc
+import algorithms as hc
 import matplotlib.pyplot as plt
 import seaborn as sns
 
@@ -42,6 +42,36 @@ def testHillClimbingForDifferentSizes(sizes, iterations):
     
     return resultados
 
+def testSimulatedAnnealingForDifferentSizes(sizes, iterations):
+    # Crear una lista para almacenar los resultados
+    resultados = []
+
+    for size in sizes:
+        print(f"\nProbando con un tablero de {size} reinas: ")
+
+        # Variables para estadísticas
+        for i in range(iterations):
+            # Generar el tablero inicial
+            tablero_inicial = tablero.generarTablero(size)
+            
+            # Medir tiempo de ejecución
+            start_time = time.time()
+            
+            # Aplicar Hill Climbing
+            solucion, conflictos, moves = hc.simulatedAnnealing(tablero_inicial)
+            
+            # Medir tiempo final de ejecución
+            end_time = time.time()
+            tiempo_ejecucion = end_time - start_time
+            
+            # Almacenar resultados en la lista
+            resultados.append({
+                "Tamaño del tablero": size,
+                "Movimientos": moves,
+                "Tiempo (segundos)": tiempo_ejecucion
+            })
+    
+    return resultados
 
 def boxplot_tiempos(df):
     """

@@ -1,5 +1,6 @@
 import tablero
 import random
+import math
 def generateNeighBors(column , table , neighbors):
     # Genero los vecinos para una columna en particular
     current_row = table[column]
@@ -46,3 +47,35 @@ def hillClimbing(table):
         moves += 1
     
     return best_neighbor , min_conflicts , moves
+
+
+
+def simulatedAnnealing(initial_table, initial_temp=1000, cooling_rate=0.90, max_iter=1000):
+    current_table = initial_table
+    current_conflicts = sum(tablero.checkConflicts(current_table))
+    temp = initial_temp
+    best_table = current_table
+    best_conflicts = current_conflicts
+    moves = 1
+    for i in range(max_iter):
+        neighbors = generateAllNeighbors(current_table)
+        next_table = random.choice(neighbors)
+        next_conflicts = sum(tablero.checkConflicts(next_table))
+        
+        if next_conflicts < best_conflicts:
+            best_table = next_table
+            best_conflicts = next_conflicts
+        
+        # Decide si aceptamos el siguiente estado basado en la probabilidad
+        if next_conflicts < current_conflicts or random.uniform(0, 1) < math.exp((current_conflicts - next_conflicts) / temp):
+            current_table = next_table
+            current_conflicts = next_conflicts
+        
+        # Reduzco la temperatura
+        temp *= cooling_rate
+        moves += 1
+
+        if current_conflicts == 0:
+            break
+
+    return best_table, best_conflicts , moves
