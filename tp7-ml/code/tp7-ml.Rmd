@@ -1,0 +1,490 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+# División de los datos
+
+Lo primero que hacemos es leer el archivo "arbolado-mza-dataset.csv" y guardarlo en una variable.
+
+```{r}
+datos <- read.csv(file.choose())
+```
+
+A partir de los datos de "arbolado-mza-dataset.csv", seleccionamos de manera aleatoria el 80% de los datos y lo guardamos en un archivo llamado "arbolado-mendoza-dataset-train.csv" y el 20% restante en un archivo llamado "arbolado-mendoza-dataset-validation.csv".
+
+```{r}
+set.seed(123)  # Establecemos semilla para reproducibilidad
+
+# Total de filas en el data frame
+total_filas <- nrow(datos)
+
+# Seleccionar aleatoriamente el 80% de los índices de filas
+indices_80 <- sample(1:total_filas, size = 0.8 * total_filas)
+
+# Crear el subconjunto con el 80% de las filas seleccionadas aleatoriamente
+datos_80 <- datos[indices_80, ]
+
+# Crear el subconjunto con el 20% restante (los índices que no fueron seleccionados)
+datos_20 <- datos[-indices_80, ]
+
+# Guardar un data frame en CSV sin incluir los índices de fila
+write.csv(datos_80,file.choose() , row.names = FALSE)
+write.csv(datos_20, file.choose(), row.names = FALSE)
+```
+
+Ahora vamos a analizar la distribución de arboles con inclinación peligrosa sobre nuestro archivo de entrenamiento.
+
+```{r}
+# Distribución de inclinacion_peligrosa en el 80% de los datos
+distribucion <- table(datos_80$inclinacion_peligrosa)
+
+# Muestro la distribución
+distribucion
+
+# Gráfico de barras 
+barplot(distribucion, main = "Distribución de Inclinación Peligrosa", xlab = "Clase de Inclinación Peligrosa", ylab = "Frecuencia", col = "lightblue")
+```
+
+Se puede observar que hay más de 20mil arboles sin inclinación peligrosa, mientras que solo tenemos menos de 3mil arboles con inclinación peligorsa.
+
+```{r}
+# Proporciones de la clase inclinacion_peligrosa
+proporciones <- prop.table(distribucion)
+
+# Mostrar las proporciones
+proporciones
+```
+
+Al calcular las proporciones podemos observar que los arboles con inclinación peligrosa solo representan el 11%, mientras que el 89% restante no posee una inclinación peligrosa.
+
+# Datos divididos por sección
+
+Se procederá a dividir los datos agrupandolos según el número de sección
+
+```{r}
+# Dividir datos_80 en base a la columna 'seccion'
+datos_por_seccion <- split(datos_80, datos_80$seccion)
+
+# Iterar sobre cada sección y calcular la distribución de inclinacion_peligrosa en porcentajes
+for (seccion in names(datos_por_seccion)) {
+  # Obtener los datos de la sección actual
+  datos_seccion <- datos_por_seccion[[seccion]]
+  nombre_seccion <- datos_seccion$nombre_seccion[1]  # Obtener el nombre de la sección
+  
+  # Calcular la distribución de inclinacion_peligrosa en valores absolutos
+  distribucion_seccion <- table(datos_seccion$inclinacion_peligrosa)
+  
+  # Calcular los porcentajes de inclinacion_peligrosa
+  total_arboles <- sum(distribucion_seccion)
+  porcentaje_seccion <- (distribucion_seccion / total_arboles) * 100
+  
+  # Mostrar los porcentajes calculados para cada clase junto con el total de árboles
+  cat("\nSección:", nombre_seccion)
+  cat("\nTotal de árboles:", total_arboles)
+  cat("\nPorcentajes de inclinación peligrosa:\n")
+  print(porcentaje_seccion)
+  
+  # Gráfico de barras con porcentajes y límite en el eje y de 0 a 6000
+  barplot(distribucion_seccion, 
+          main = paste("Distribución de Inclinación Peligrosa para la Sección:", nombre_seccion), 
+          xlab = "Clase de Inclinación Peligrosa", 
+          ylab = "Frecuencia", 
+          col = "lightblue",
+          ylim = c(0, 6000))  # Limitar el eje y de 0 a 6000
+  
+  # Agregar etiquetas sobre cada barra
+  text(x = barras, 
+       y = distribucion_seccion, 
+       label = distribucion_seccion, 
+       pos = 3,    # 'pos = 3' coloca la etiqueta arriba de la barra
+       cex = 0.8,  # Tamaño de la etiqueta
+       col = "red")  # Color de la etiqueta
+}
+
+```
+
+Basandonos en los resultados obtenidos podemos observar que las secciones con mayor porcentaje de árboles con inclinación peligrosa son:
+
+1.  **Barrio Cívico** con 14.48% de árboles peligrosos.
+
+2.  **Parque O'Higgins** con un 14.37% de árboles peligrosos.
+
+Podemos ver que ambas secciones tienen porcentajes cercanos, pero el **Barrio Cívico** es la sección más peligrosa ya que tiene un mayor porcentaje (14.48%) y tiene una cantidad significativa de árboles (2998).
+
+Además podemos observar que la sección con menor porcentaje de árboles con inclinación peligrosa es **Aeroparque**, con un 2.92%. Sin embargo, también podemos observar que la sección **San Agustín** no tiene árboles con inclinación peligrosa, pero esto se debe a que el tamaño de la muestra es muy bajo, lo que hace que su porcentaje de 100% de árboles sin inclinación peligrosa no sea representativo.
+
+# Datos divididos por especie
+
+```{r}
+# Dividir datos_80 en base a la columna 'especie'
+datos_por_especie <- split(datos_80, datos_80$especie)
+
+# Iterar sobre cada especie y calcular la distribución de inclinacion_peligrosa en porcentajes
+for (especie in names(datos_por_especie)) {
+  # Obtener los datos de la especie actual
+  datos_especie <- datos_por_especie[[especie]]
+  nombre_especie <- datos_especie$especie[1]  # Obtener el nombre de la especie
+  
+  # Calcular la distribución de inclinacion_peligrosa en valores absolutos
+  distribucion_especie <- table(datos_especie$inclinacion_peligrosa)
+  
+  # Calcular los porcentajes de inclinacion_peligrosa
+  total_arboles <- sum(distribucion_especie)
+  porcentaje_especie <- (distribucion_especie / total_arboles) * 100
+  
+  # Mostrar los porcentajes calculados para cada clase junto con el total de árboles
+  cat("\nEspecie:", nombre_especie)
+  cat("\nTotal de árboles:", total_arboles)
+  cat("\nPorcentajes de inclinación peligrosa:\n")
+  print(porcentaje_especie)
+  
+  # Gráfico de barras con porcentajes y límite en el eje y de 0 a 6000
+  barras <- barplot(distribucion_especie, 
+                    main = paste("Distribución de Inclinación Peligrosa para la especie:", nombre_especie), 
+                    xlab = "Clase de Inclinación Peligrosa", 
+                    ylab = "Frecuencia", 
+                    col = "lightblue",
+                    ylim = c(0, 10000))  # Limitar el eje y de 0 a 6000
+  
+  # Agregar etiquetas sobre cada barra
+  text(x = barras, 
+       y = distribucion_especie, 
+       label = distribucion_especie, 
+       pos = 3,    # 'pos = 3' coloca la etiqueta arriba de la barra
+       cex = 0.8,  # Tamaño de la etiqueta
+       col = "red")  # Color de la etiqueta
+}
+
+
+```
+
+Basándonos en los resultados obtenidos vemos que las especie con mayor riesgo son:
+
+-   **Algarrobo**: El 40% de estos presentan inclinación peligrosa, pero tiene una muestra poco significativa (5 árboles).
+
+-   **Morera**: Se evaluaron 10524 árboles y se observa que es la especie con mayor número de árboles inclinados, presentando un 18.3% con inclinación peligrosa.
+
+-   **Acacia SP y Catalpa**: Ambas especies tienen más del 14% de árboles con inclinación peligrosa pero a su vez tienen una muestra pequeña en comparación a las *Morera*.
+
+Además podemos ver que algunas especies, como **Liquidambar**, **Palo Borracho** y **Maitén**, no presentan inclinación peligrosa en ninguna de sus muestras (100% sin inclinación). Sin embargo, es importante destacar que tienen una muestra pequeña, lo que puede limitar la generalización de estos resultados.
+
+# Histograma para la variable circ_tronco_cm
+
+```{r}
+# Generar un histograma para la variable circ_tronco_cm con 20 bins
+hist(datos_80$circ_tronco_cm, 
+     breaks = 20,           # Especificar el número de bins
+     main = "Histograma de Circunferencia del Tronco (20 bins)", 
+     xlab = "Circunferencia del Tronco (cm)", 
+     col = "lightblue", 
+     border = "black")
+
+# Probar con un número diferente de bins (por ejemplo, 50)
+hist(datos_80$circ_tronco_cm, 
+     breaks = 50,           # Especificar 50 bins
+     main = "Histograma de Circunferencia del Tronco (50 bins)", 
+     xlab = "Circunferencia del Tronco (cm)", 
+     col = "lightgreen", 
+     border = "black")
+
+# Probar con otro número de bins (por ejemplo, 100)
+hist(datos_80$circ_tronco_cm, 
+     breaks = 100,           # Especificar 100 bins
+     main = "Histograma de Circunferencia del Tronco (100)", 
+     xlab = "Circunferencia del Tronco (cm)", 
+     col = "lightcoral", 
+     border = "black")
+
+```
+
+# Histograma para la variable circ_tronco_cm separado por la variable inclinacion_peligrosa
+
+Se dividieron los datos en árboles con inclinación peligrosa y sin inclinación peligrosa, luego para cada uno de ellos se realizó un histograma según la circunferencia del tronco.
+
+```{r}
+datos_por_inclinacion <- split(datos_80 , datos_80$inclinacion_peligrosa)
+
+datos_sin_inclinacion_peligrosa <- datos_por_inclinacion[[1]]
+datos_con_inclinacion_peligrosa <- datos_por_inclinacion[[2]]
+
+hist(datos_sin_inclinacion_peligrosa$circ_tronco_cm, 
+     breaks = 100,           # Especificar 50 bins
+     main = "Histograma de Circunferencia del Tronco sin inclinación peligrosa", 
+     xlab = "Circunferencia del Tronco (cm)", 
+     col = "lightcoral", 
+     border = "black")
+
+hist(datos_con_inclinacion_peligrosa$circ_tronco_cm, 
+     breaks = 100,           # Especificar 50 bins
+     main = "Histograma de Circunferencia del Tronco con inclinación peligrosa", 
+     xlab = "Circunferencia del Tronco (cm)", 
+     col = "lightcoral", 
+     border = "black")
+```
+
+# Categorización según la circunferencia del tronco
+
+Según el hisgroma observado en puntos anteriores, se categorizaron las circunferencias de los troncos tomando en cuenta los siguientes cortes:
+
+-   Bajo: De 0 a 60 centímetros.
+
+-   Medio: De 60 centímetros a 120 centímetros.
+
+-   Alto: De 120 cm a 200 cm.
+
+-   Muy alto: Mayores a 200 cm.
+
+```{r}
+# Definir los puntos de corte manualmente basados en el histograma
+cortes <- c(0, 60, 120, 200, Inf)  # Cortes: 0-60, 60-120, 120-200, más de 200
+
+# Crear nueva variable categórica
+datos$circ_tronco_cm_cat <- cut(datos$circ_tronco_cm, 
+                                breaks = cortes,
+                                labels = c("bajo", "medio", "alto", "muy alto"),
+                                right = FALSE)  # right = FALSE para que el límite superior no se incluya en el intervalo
+
+# Muestro la cantidad de árboles según la nueva variable
+table(datos$circ_tronco_cm_cat)
+```
+
+Guardo los datos en un nuevo archivo llamado "arbolado-mendoza-dataset-circ_tronco_cm-train.csv"
+
+```{r}
+# Guardar el nuevo dataframe en un archivo CSV
+write.csv(datos, file.choose(), row.names = FALSE)
+```
+
+# Clasificador aleatorio
+
+Primero leo el archivo *"arbolado-mendoza-dataset-validation.csv"* y le agrego una columna nueva llamada **prediction_prob** con un valor entre 0 y 1 a cada muestra. Luego agrego una nueva columna llamada **prediction_class** cuyo valor es 1 o 0 dependiendo del valor de **prediction_prob**.
+
+```{r}
+# 1. Función para generar una columna con valores aleatorios entre 0 y 1
+generate_random_prob <- function(df) {
+  df$prediction_prob <- runif(nrow(df))  # Generar valores aleatorios entre 0 y 1
+  return(df)
+}
+
+# 2. Función que implementa el clasificador aleatorio basado en prediction_prob
+random_classifier <- function(df) {
+  df$prediction_class <- ifelse(df$prediction_prob > 0.5, 1, 0)  # Asignar clases basadas en el umbral 0.5
+  return(df)
+}
+
+# 3. Cargar el archivo arbolado-mendoza-dataset-validation.csv
+datos_validation <- read.csv("arbolado-mendoza-dataset-validation.csv")  
+
+# 4. Aplicar la función generate_random_prob al dataframe de validación
+datos_validation <- generate_random_prob(datos_validation)
+
+# 5. Aplicar el clasificador aleatorio al dataframe de validación
+datos_validation <- random_classifier(datos_validation)
+
+# 6. Muestro las primeras filas para verificar
+head(datos_validation)
+
+```
+
+Luego, calculo las siguientes métricas:
+
+-   Número de árboles CON inclinación peligrosa que fueron correctamente predicho como peligrosos por el modelo/algoritmo. (True Positive)
+
+-   Número de árboles SIN inclinación peligrosa  que fueron correctamente predicho como no peligrosos por el modelo. (True Negative)
+
+-   Número de árboles SIN inclinación peligrosa que fueron incorrectamente predicho como peligrosos según el modelo. (False Positives)
+
+-   Número de árboles CON inclinación peligrosa que fueron incorrectamente predicho como no peligrosos según el modelo. (False Negatives)
+
+```{r}
+
+# Calcular las métricas de predicción: True Positive, True Negative, False Positive, False Negative
+resultados_random <- datos_validation %>%
+  summarise(
+    True_Positive = sum(inclinacion_peligrosa == 1 & prediction_class == 1),  
+    True_Negative = sum(inclinacion_peligrosa == 0 & prediction_class == 0),  
+    False_Positive = sum(inclinacion_peligrosa == 0 & prediction_class == 1),
+    False_Negative = sum(inclinacion_peligrosa == 1 & prediction_class == 0)
+    )
+
+# Mostrar los resultados
+print(resultados_random)
+
+```
+
+# Clasificador por mayoria
+
+```{r}
+# Implementar la función biggerclass_classifier
+biggerclass_classifier <- function(df) {
+  # Identificar la clase mayoritaria en la columna inclinacion_peligrosa
+  clase_mayoritaria <- ifelse(mean(df$inclinacion_peligrosa) > 0.5, 1, 0)
+  
+  # Crear la nueva columna prediction_class asignando siempre la clase mayoritaria
+  df$prediction_class <- clase_mayoritaria
+  
+  # Devolver el dataframe con la nueva columna
+  return(df)
+}
+
+# Aplicar la función al dataframe
+datos_clasificados <- biggerclass_classifier(datos_validation)
+
+# Mostrar los primeros resultados
+head(datos_clasificados)
+
+```
+
+```{r}
+# Calcular TP, TN, FP, FN
+resultados_mayoria <- datos_clasificados %>%
+  summarise(
+    True_Positive = sum(inclinacion_peligrosa == 1 & prediction_class == 1),
+    True_Negative = sum(inclinacion_peligrosa == 0 & prediction_class == 0),
+    False_Positive = sum(inclinacion_peligrosa == 0 & prediction_class == 1),
+    False_Negative = sum(inclinacion_peligrosa == 1 & prediction_class == 0)
+  )
+
+# Mostrar los resultados
+print(resultados_mayoria)
+```
+
+# Métricas
+
+## Métricas para el clasificador aleatorio
+
+```{r}
+TP <- resultados_random$True_Positive
+TN <- resultados_random$True_Negative
+FP <- resultados_random$False_Positive
+FN <- resultados_random$False_Negative
+
+presicion <- TP / (TP + FP)
+accuracy <- (TP + TN) / (TP+TN+FP+FN)
+specificity <- TN / (TN + FP)
+sensitivity <- TP / (TP + FN)
+
+presicion
+accuracy
+specificity
+sensitivity
+```
+
+## Métricas para el clasificador por mayoría
+
+```{r}
+TP <- resultados_mayoria$True_Positive
+TN <- resultados_mayoria$True_Negative
+FP <- resultados_mayoria$False_Positive
+FN <- resultados_mayoria$False_Negative
+
+presicion <- TP / (TP + FP)
+accuracy <- (TP + TN) / (TP+TN+FP+FN)
+specificity <- TN / (TN + FP)
+sensitivity <- TP / (TP + FN)
+
+presicion
+accuracy
+specificity
+sensitivity
+```
+
+Funciona bien en términos de exactitud cuando hay una clase mayoritaria dominante (en este caso, los árboles sin inclinación peligrosa), pero falla al detectar árboles peligrosos, lo que se refleja en la precisión y sensibilidad.
+
+# K-Folds Cross Validation
+
+## Función create_folds
+
+Esta función toma como paremetro un dataframe y lo separa en k partes iguales:
+
+```{r}
+create_folds <- function(data, k) {
+  # Mezclar los índices de las filas
+  indices <- sample(seq_len(nrow(data)))
+  
+  # Dividir en k partes iguales
+  folds <- split(indices, cut(seq_along(indices), k, labels = FALSE))
+  
+  # Asignar nombres de "Fold1", "Fold2", ...
+  names(folds) <- paste0("Fold", seq_along(folds))
+  return(folds)
+}
+```
+
+## Función cross_validation
+
+Esta función toma como parámetro un dataframe y un número de folds, luego lo separa en k partes iguales con la función create_folds y para cada fold entrena un modelo de árbol de decisión utilizando el paquete rpart. Además para cada conjunto de entrenamiento calculo las siguientes métricas: Accuracy, Precision, Sensitivity, Specificity
+
+```{r}
+library(rpart)
+library(caret)
+library(dplyr)
+
+cross_validation <- function(data, folds) {
+  
+  # Crear folds manteniendo la proporción de clases
+  folds_indices <- create_folds(data, folds)
+  
+  # Inicializar listas para guardar las métricas de cada fold
+  accuracy_list <- c()
+  precision_list <- c()
+  sensitivity_list <- c()
+  specificity_list <- c()
+  
+  for (i in seq_along(folds_indices)) {
+    # Separar los índices de test y entrenamiento para este fold
+    test_indices <- folds_indices[[i]]
+    train_data <- data[-test_indices, ]
+    test_data <- data[test_indices, ]
+    
+    # Asegurarse de que 'inclinacion_peligrosa' es un factor en ambos conjuntos
+    train_data$inclinacion_peligrosa <- factor(train_data$inclinacion_peligrosa, levels = c(0, 1))
+    test_data$inclinacion_peligrosa <- factor(test_data$inclinacion_peligrosa, levels = c(0, 1))
+    
+    # Asegurarse de que los niveles de 'especie' son los mismos en ambos conjuntos
+    train_data$especie <- factor(train_data$especie)
+    test_data$especie <- factor(test_data$especie, levels = levels(train_data$especie))
+    
+    # Definir la fórmula para el modelo
+    train_formula <- formula(inclinacion_peligrosa ~ altura + circ_tronco_cm + lat + long + seccion + especie)
+    
+    # Entrenar el modelo de árbol de decisión
+    model <- rpart(train_formula, data = train_data)
+    
+    # Realizar predicciones en el conjunto de test
+    predictions <- predict(model, test_data, type = "class")
+    
+    # Calcular la matriz de confusión
+    cm <- confusionMatrix(as.factor(predictions) , as.factor(test_data$inclinacion_peligrosa) )
+    
+    # Guardar las métricas
+    accuracy_list <- c(accuracy_list, cm$overall["Accuracy"])
+    precision_list <- c(precision_list, cm$byClass["Precision"])
+    sensitivity_list <- c(sensitivity_list, cm$byClass["Sensitivity"])
+    specificity_list <- c(specificity_list, cm$byClass["Specificity"])
+  }
+  
+  # Calcular media y desviación estándar de cada métrica
+  results <- list(
+    accuracy_mean = mean(accuracy_list),
+    accuracy_sd = sd(accuracy_list),
+    precision_mean = mean(precision_list),
+    precision_sd = sd(precision_list),
+    sensitivity_mean = mean(sensitivity_list),
+    sensitivity_sd = sd(sensitivity_list),
+    specificity_mean = mean(specificity_list),
+    specificity_sd = sd(specificity_list)
+  )
+  
+  return(results)
+}
+
+```
+
+```{r}
+# Ejecutar la validación cruzada con el dataframe limpio
+resultados_cross_validation <- cross_validation(datos_80, 10)
+print(resultados_cross_validation)
+
+```
