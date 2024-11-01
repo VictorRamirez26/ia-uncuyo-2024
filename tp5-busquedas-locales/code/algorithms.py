@@ -40,15 +40,21 @@ def findBestNeighbord(table):
 
 def hillClimbing(table):
 
-    best_neighbor, min_conflicts = findBestNeighbord(table)
-    # Almaceno el historial de la cantidad de reinas atacadas hasta encontrar la solucion
+    current_table = table
+    current_conflicts = sum(tablero.checkConflicts(current_table))
+    moves = 0
     h_e_list = []
-    h_e_list.append(min_conflicts)
 
-    moves = 1
-    while min_conflicts > 0 and moves < 1000:
-        best_neighbor, min_conflicts = findBestNeighbord(best_neighbor)
+    while current_conflicts > 0 and moves < 1000:
+        best_neighbor, min_conflicts = findBestNeighbord(current_table)
         h_e_list.append(min_conflicts)
+        
+        if min_conflicts < current_conflicts:
+            current_table = best_neighbor
+            current_conflicts = min_conflicts
+        else:
+            break  # No hay mejor vecino, salimos del bucle
+
         moves += 1
     
     return best_neighbor , min_conflicts , moves , h_e_list

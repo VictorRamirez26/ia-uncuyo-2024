@@ -11,6 +11,7 @@ iterations = 30
 """
 # Ejecutar la prueba con 30 iteraciones para cada tamaño y guardar en Excel
 seed = 1436123
+random.seed(seed)
 tableros = utils.PlotUtils.generarTableros(sizes , iterations)
 
 results1 = utils.PlotUtils.generateResults(tableros,algo.hillClimbing)
@@ -30,15 +31,15 @@ print(f"\nResultados guardados en simulated_annealing_results.xlsx")
 
 df3.to_excel("genetic_algorithm_results.xlsx", index=False)
 print(f"\nResultados guardados en genetic_algorithm_results.xlsx")
-
-
 """
+
+
 # Si ya tengo los resultados los leo, sino descomentar lo de arriba
 df1 = pd.read_excel("hill_climbing_results.xlsx")
 df2 = pd.read_excel("simulated_annealing_results.xlsx")
 df3 = pd.read_excel("genetic_algorithm_results.xlsx")
-
 """
+
 # Gráficos Hill climbing
 utils.PlotUtils.boxplot(df1,"Tamaño del tablero","Tiempo (segundos)", "Hill Climbing")
 utils.PlotUtils.boxplot(df1,"Tamaño del tablero","Cantidad de Movimientos", 
@@ -50,7 +51,6 @@ utils.PlotUtils.boxplot(df2,"Tamaño del tablero","Cantidad de Movimientos",
                             "Simulated Annealing")
 
                             
-
 # Gráficos Algoritmo Genético
 utils.PlotUtils.boxplot(df3,"Tamaño del tablero","Tiempo (segundos)", "Genetic Algorithm")
 utils.PlotUtils.boxplot(df3,"Tamaño del tablero","Cantidad de Movimientos", 

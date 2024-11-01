@@ -63,7 +63,7 @@ class PlotUtils:
         plt.ylabel(labelY)
         plt.legend()
         plt.grid(True)
-        
+        plt.ylim(-1,30)
         # Muestra el gráfico para el tamaño actual
         plt.show()
 
@@ -121,16 +121,19 @@ class PlotUtils:
 
     @staticmethod
     def plot_percentage_by_sizes(sizes, percentages: list, algoritmo: str):
-        
         plt.figure(figsize=(10, 6))
         sizes_str = [str(size) for size in sizes]
         plt.bar(sizes_str, percentages, color='skyblue')
         
         # Añadir etiquetas a cada barra
         for i, percentage in enumerate(percentages):
-            plt.text(i, percentage + 1, f"{percentage:.1f}%", ha='center', va='bottom', fontsize=10)
+            plt.text(i, percentage + 1, f"{percentage:.3f}%", ha='center', va='bottom', fontsize=10)
         
         plt.xlabel("Tamaño del tablero")
         plt.ylabel("Porcentaje de soluciones")
         plt.title(f"Porcentaje de veces que se encontró solución: {algoritmo}")
+        
+        # Establecer los límites del eje Y de 0 a 100
+        plt.ylim(0, 110)
+        
         plt.show()
