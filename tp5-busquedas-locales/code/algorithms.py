@@ -67,7 +67,7 @@ def simulatedAnnealing(initial_table, initial_temp=1000, cooling_rate=0.90, max_
     h_e_list.append(best_conflicts)
 
     moves = 1
-    for _ in range(max_iter):
+    for _ in range(max_iter-1):
         neighbors = generateAllNeighbors(current_table)
         next_table = random.choice(neighbors)
         next_conflicts = sum(tablero.checkConflicts(next_table))
@@ -243,7 +243,7 @@ def geneticAlgorithm(size):
             h_e_list.append(max_possible_fitness - max_fitness)
             index = fitness_list.index(max_fitness) # Indice del hijo con mayor fitness
             #print(f"Encontramos el mejor hijo: {childrens[index]} , {fitness_list[index]}")
-            return childrens[index] , (max_possible_fitness - fitness_list[index]) , 1000 - generation , h_e_list
+            return childrens[index] , (max_possible_fitness - fitness_list[index]) , 1001 - generation , h_e_list
 
         h_e_list.append(max_possible_fitness - max_fitness)
         population_fitness = populationFitness(childrens,fitness_list) # Uno en una tupla
