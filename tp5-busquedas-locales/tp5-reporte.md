@@ -74,9 +74,9 @@ Con respecto al algoritmo genético, se generó una cantidad determinada de tabl
 
 Se generaron gráficos de caja que ilustran el tiempo de ejecución de cada algoritmo para diferentes tamaños de tablero. Además, se elaboró un boxplot que presenta los resultados de las 30 iteraciones realizadas para cada tamaño.
 
-![Imagen 1](/images/Tiempos/hill_climbing_tiempos.png)
-![Imagen 2](/images/Tiempos/simulated_annealing_tiempos.png)
-![Imagen 3](/images/Tiempos/genetico_tiempos.png)
+![Imagen 1](./images/Tiempos/hill_climbing_tiempos.png)
+![Imagen 2](./images/Tiempos/simulated_annealing_tiempos.png)
+![Imagen 3](./images/Tiempos/genetico_tiempos.png)
 
 Al comparar el rendimiento del algoritmo Hill Climbing con el Simulated Annealing en términos de tiempo de ejecución, se observa que Hill Climbing tiene un desempeño ligeramente superior, especialmente en tableros de menor tamaño. 
 
@@ -87,9 +87,9 @@ Por otro lado, el Genetic Algorithm se destaca como el que requiere más tiempo 
 
 Se generaron gráficos de caja que reflejan la cantidad de estados explorados por cada algoritmo, considerando todos los tamaños de tablero. Estos gráficos muestran el número de estados recorridos hasta encontrar una solución o alcanzar el límite de iteraciones.
 
-![Imagen 4](/images/Movimientos/hill_climbing_movimientos.png)
-![Imagen 5](/images/Movimientos/simulated_annealing_movimientos.png)
-![Imagen 6](/images/Movimientos/genetico_movimientos.png)
+![Imagen 4](./images/Movimientos/hill_climbing_movimientos.png)
+![Imagen 5](./images/Movimientos/simulated_annealing_movimientos.png)
+![Imagen 6](./images/Movimientos/genetico_movimientos.png)
 
 Al comparar Hill Climbing con Simulated Annealing en términos de estados explorados, se observa que Hill Climbing recorre una menor cantidad de estados independientemente del tamaño del tablero. Esto se debe, en gran parte, a que Simulated Annealing incluye una probabilidad de moverse a un estado peor, lo cual ayuda a evitar caer en máximos locales.
 
@@ -99,9 +99,9 @@ Por otro lado, el Genetic Algorithm es el que requiere más movimientos para enc
 
 A continuación, analizaremos cómo se comporta cada algoritmo en la búsqueda de una solución. Para ello, tomaremos una muestra de ejecuciones con un tamaño de tablero de 10 y observaremos la evolución de los pares de reinas en conflicto en cada iteración.
 
-![Imagen 7](/images/Funcion%20H/h_hill_climbing.png)
-![Imagen 8](/images/Funcion%20H/h_simulated_annealing.png)
-![Imagen 9](/images/Funcion%20H/h_genetic_algorithm.png)
+![Imagen 7](./images/Funcion%20H/h_hill_climbing.png)
+![Imagen 8](./images/Funcion%20H/h_simulated_annealing.png)
+![Imagen 9](./images/Funcion%20H/h_genetic_algorithm.png)
 
 Como se observa en el gráfico, Hill Climbing presenta una disminución continua en el número de reinas en conflicto, ya que el algoritmo siempre se mueve hacia estados con menos conflictos. Sin embargo, en este caso, se quedó atrapado en un máximo local y no logró alcanzar la solución.
 
@@ -113,9 +113,9 @@ En el caso de Genetic Algorithm, la cantidad de reinas en conflicto se mantiene 
 
 A continuación, se analiza el porcentaje de éxito de cada algoritmo en encontrar la solución óptima, es decir, un estado donde no haya ningún par de reinas atacándose entre sí.
 
-![Imagen 10](/images/Porcentajes/porcentajes_hill_climbing.png)
-![Imagen 11](/images/Porcentajes/porcentajes_simulated_annealing.png)
-![Imagen 12](/images/Porcentajes/porcentajes_genetic_algorithm.png)
+![Imagen 10](./images/Porcentajes/porcentajes_hill_climbing.png)
+![Imagen 11](./images/Porcentajes/porcentajes_simulated_annealing.png)
+![Imagen 12](./images/Porcentajes/porcentajes_genetic_algorithm.png)
 
 Como se observa, Hill Climbing tiene una baja probabilidad de encontrar la solución óptima, y esta probabilidad disminuye a medida que aumenta el tamaño del tablero. Por el contrario, Simulated Annealing y Genetic Algorithm presentan una alta probabilidad de éxito en tableros pequeños; sin embargo, esta probabilidad también disminuye en tableros de mayor tamaño. Aun así, ambos algoritmos tienen una probabilidad significativamente mayor de alcanzar la solución óptima en comparación con Hill Climbing. Esto se debe a la capacidad de exploración que ofrece la probabilidad de mutación en el caso de Genetic Algorithm y la posibilidad de aceptar estados peores al inicio en Simulated Annealing, lo que ayuda a evitar quedar atrapados en óptimos locales.
 
