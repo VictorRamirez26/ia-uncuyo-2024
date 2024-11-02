@@ -59,10 +59,26 @@ son consistentes con ese valor de X<sub>k</sub>.
 
 ## Ejercicio 5
 
-### Demostrar la correctitud del algoritmo CSP para ´arboles estructurados
+### Demostrar la correctitud del algoritmo CSP para árboles estructurados
 
 La 2-consistencia nos dice que para cada par de variables X<sub>i</sub> , X<sub>j</sub> conectadas por una restricción, entonces para cada valor del dominio de X<sub>i</sub> existe al menos un valor en el dominio X<sub>j</sub> que satisface la restricción entre estos.
 
 En un árbol, la propiedad que nos interesa es que no tiene ciclos. Esto significa que una vez que asignamos valores a las variables no vamos a tener caminos "cíclicos" que nos provoquen una inconsistencia. Entonces, una vez que una variable sea consistente con su vecino (nodo hijo), esa consistencia no se verá afectada por la asignaciones posteriores. 
 
 Entonces, para demostrar la n-consistencia en un árbol vamos a elegir un nodo "raíz" y vamos a realizar un recorrido hacia abajo, aplicando la 2-consistencia en cada nodo, lo que garantiza que para cualquier valor asignado a una variable, existe al menos un valor compatible en sus nodos hijos. Como el grafo no tiene ciclos, no necesitamos preocuparnos de que las asignaciones en otros subárboles interfieran con las consistencias previamente establecidas. Esto implica que la 2-consistencia es **suficiente** para garantizar la n-consistencia en un CSP basado en árboles.
+
+## Ejercicio 6 y 7
+
+En estos ejercicios se implementaron los algoritmos de Backtracking y Forward Checking para resolver el problema de las N-reinas, considerando tableros de tamaño 4, 8, 10, 12 y 15. En ambos algoritmos, la evaluación de soluciones comienza desde la columna 0, fila 0 de cada tablero.
+
+### Cantidad de Estados Explorados
+![Imagen 1](./imagenes/estados.png)
+
+Forward Checking explora significativamente menos estados que Backtracking, independientemente del tamaño del tablero. Esto se debe a la capacidad de Forward Checking para reducir el dominio de posibles ubicaciones, eliminando aquellas que no cumplen con las restricciones del problema en función de cada movimiento realizado. Por otro lado, Backtracking prueba todas las combinaciones posibles, sin reducir el dominio.
+
+### Tiempos de Ejecución
+![Imagen 2](./imagenes/tiempos.png)
+
+Podemos observar que Forward Checking requiere mucho menos tiempo para encontrar la solución debido a la menor cantidad de estados explorados. 
+
+Además, al comparar Forward Checking con otros algoritmos como Hill Climbing, Simulated Annealing y Genetic Algorithm, se destaca que Forward Checking ofrece el mejor rendimiento. Esto se debe a que en el problema de N-reinas, al conocer de antemano las restricciones, se puede encontrar una solución de manera determinista. En contraste, los algoritmos anteriores tendían a quedar atrapados en óptimos locales, como se observó en el TP5. Forward Checking garantiza siempre encontrar una solución.

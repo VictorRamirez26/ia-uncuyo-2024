@@ -49,8 +49,8 @@ class PlotUtils:
 
         plt.figure(figsize=(12, 6))
         # Usar sizes_backtracking ya que asumo que ambos deben ser iguales
-        sns.lineplot(x=sizes_backtracking, y=tiempos_backtracking, label='Backtracking', marker='o')
-        sns.lineplot(x=sizes_forward, y=tiempos_forward, label='Forward Checking', marker='o')
+        sns.lineplot(x=sizes_backtracking, y=tiempos_backtracking, label='Backtracking', marker='o', linestyle='--')
+        sns.lineplot(x=sizes_forward, y=tiempos_forward, label='Forward Checking', marker='o', linestyle='--')
 
         plt.xticks(sizes_backtracking)  # Asegurarse de que todos los tamaños se muestran en el eje X
         plt.title('Comparación de Tiempos de Ejecución')
@@ -72,8 +72,8 @@ class PlotUtils:
 
         plt.figure(figsize=(12, 6))
         # Usar sizes_backtracking ya que asumo que ambos deben ser iguales
-        sns.lineplot(x=sizes_backtracking, y=estados_backtracking, label='Backtracking', marker='o')
-        sns.lineplot(x=sizes_forward, y=estados_forward, label='Forward Checking', marker='o')
+        sns.lineplot(x=sizes_backtracking, y=estados_backtracking, label='Backtracking', marker='o', linestyle='--')
+        sns.lineplot(x=sizes_forward, y=estados_forward, label='Forward Checking', marker='o', linestyle='--')
 
         plt.xticks(sizes_backtracking)  # Asegurarse de que todos los tamaños se muestran en el eje X
         plt.title('Comparación de Estados Explorados')
