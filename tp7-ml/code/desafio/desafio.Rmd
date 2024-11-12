@@ -1,0 +1,230 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+# Desafío Kaggle
+
+```{r}
+library(dplyr)
+datos <- read.csv(file.choose())
+
+# Cargar el dataset de prueba
+datos_prueba <- read.csv(file.choose())
+
+```
+
+## Primera limpieza de datos
+
+Primero se procederá a eliminar las columnas "id" y "ultima_modificacion"
+
+```{r}
+datos_seleccionados <- datos %>%
+  select(-id, -ultima_modificacion)
+```
+
+Luego, filtramos nuestro dataset para que solo contenga las especies con 30 o más árboles. Esto se hace para asegurarnos de que solo estemos trabajando con especies que tienen una representación significativa en el dataset.
+
+```{r}
+# Filtramos el dataset para que solo contenga especies con al menos 30 árboles
+conteo_especies <- datos_seleccionados %>%
+  count(especie)
+
+especies_filtradas <- conteo_especies %>%
+  filter(n >= 30) %>%
+  pull(especie)
+
+# Filtramos el dataset para quedarnos solo con las especies seleccionadas
+datos_filtrados <- datos_seleccionados %>%
+  filter(especie %in% especies_filtradas)
+
+```
+
+# Random Forest
+
+Ahora utilizaremos el paquete randomForest para evaluar la importancia de las variables en la predicción de "inclinacion_peligrosa".
+
+```{r}
+# Instalamos e importamos el paquete randomForest para utilizar un modelo de Bosques Aleatorios
+
+install.packages("randomForest")
+library(randomForest)
+
+# Entrenar el modelo de Random Forest para determinar la importancia de las variables
+# La variable dependiente es 'inclinacion_peligrosa', mientras que el resto de las columnas son los predictores
+modelo_rf <- randomForest(inclinacion_peligrosa ~ ., data = datos_filtrados, importance = TRUE)
+
+# Revisamos la importancia de cada variable
+
+importancia <- importance(modelo_rf)
+print(importancia)
+
+# 'varImpPlot()' nos muestra gráficamente qué variables tienen mayor influencia en el modelo.
+varImpPlot(modelo_rf)
+
+```
+
+Como vemos, la función 'importance()' nos da dos métricas principales:
+
+-   '%IncMSE' mide el impacto en el error de predicción si se permutan los valores de cada variable (cuanto mayor sea el valor, mayor es la importancia),
+-   'IncNodePurity' mide la reducción de impureza en los nodos del modelo (un valor alto sugiere que la variable es importante en las divisiones del árbol).
+
+## Conclusión:
+
+Con base en los resultados del análisis de importancia de las variables, se ha determinado que las variables '**especie**', '**long**', '**lat**', '**circ_tronco_cm**' y '**altura**' son las más relevantes para predecir la inclinación peligrosa de un árbol. La variable 'especie' mostró la mayor influencia en la predicción, seguida de la ubicación geográfica ('long' y 'lat'), el 'circ_tronco_cm' y 'altura'.
+
+## Segunda limpieza de datos
+
+Seleccionaremos solo las columnas "**especie**" , "**long**", "**lat**" , "**circ_tronco_cm**" , "**altura**" para el análisis, ya que son las que más aportan a la precisión del modelo, y reducimos la dimensionalidad del dataset excluyendo otras columnas que tienen menor influencia en la predicción.
+
+```{r}
+# Filtrar el dataset de prueba para que solo tenga las columnas relevantes, incluyendo el 'id'
+datos_prueba_reducido <- datos_prueba %>%
+  select(id, especie, long, lat, circ_tronco_cm, altura)
+```
+
+```{r}
+# Seleccionamos las columnas relevantes
+datos_reducidos <- datos_filtrados %>%
+  select(especie, long, lat, circ_tronco_cm, altura, inclinacion_peligrosa)
+
+modelo_rf <- randomForest(inclinacion_peligrosa ~ ., data = datos_reducidos, importance = TRUE)
+
+# Realizar predicciones en el dataset de prueba
+predicciones <- predict(modelo_rf, newdata = datos_prueba_reducido)
+
+# Crear un data frame con los resultados: 'id' y 'inclinacion_peligrosa'
+resultados <- data.frame(id = datos_prueba_reducido$id, inclinacion_peligrosa = predicciones)
+
+# Guardar las predicciones en un archivo CSV
+write.csv(resultados, "predicciones_inclinacion_peligrosa.csv", row.names = FALSE)
+
+```
+
+# Balanceo de datos
+
+Lo primero que hacemos es calcular la cantidad de arboles con inclinación peligrosa y sin inclinación peligrosa.
+
+```{r}
+# Verificar el número de instancias de cada clase
+tabla_clases <- table(datos_filtrados$inclinacion_peligrosa)
+print(tabla_clases)
+```
+
+Como se puede observar, tenemos un gran desbalance, tenemos mucha mas cantidad de arboles sin inclinación peligrosa. Entonces se procederá a realizar Over Sampling y evaluar el rendimiento del modelo cuando se tienen clases mas balanceadas.
+
+## Over Sampling
+
+```{r}
+# Instalar e importar el paquete ROSE
+#install.packages("ROSE")  # Si no está instalado
+library(ROSE)  # Cargar el paquete
+library(dplyr)
+library(randomForest)
+
+# Verificar el número de instancias de cada clase
+datos_clase_0 <- datos_reducidos %>% filter(inclinacion_peligrosa == 0)
+datos_clase_1 <- datos_reducidos %>% filter(inclinacion_peligrosa == 1)
+print(paste("Clase 0: ", nrow(datos_clase_0)))  # Clase mayoritaria
+print(paste("Clase 1: ", nrow(datos_clase_1)))  # Clase minoritaria
+
+# Aumento de la clase minoritaria
+N_valor <- nrow(datos_clase_1) * 12
+
+# Realizar el over-sampling usando ROSE (aumentando solo la clase minoritaria)
+datos_over_sampling <- ovun.sample(inclinacion_peligrosa ~ ., data = datos_reducidos, method = "over", N = N_valor)$data
+
+# Verificar el nuevo balance de clases
+print(table(datos_over_sampling$inclinacion_peligrosa))
+
+# Entrenar el modelo Random Forest con los datos balanceados
+modelo_rf_over_sampling <- randomForest(inclinacion_peligrosa ~ ., data = datos_over_sampling, importance = TRUE, ntree = 2000)
+
+importancia <- importance(modelo_rf_over_sampling)
+varImpPlot(modelo_rf_over_sampling)
+
+# Realizar predicciones en el dataset de prueba
+predicciones <- predict(modelo_rf_over_sampling, newdata = datos_prueba_reducido)
+
+# Crear un data frame con los resultados: 'id' y 'inclinacion_peligrosa'
+resultados <- data.frame(id = datos_prueba_reducido$id, inclinacion_peligrosa = predicciones)
+
+# Guardar las predicciones en un archivo CSV
+write.csv(resultados, "predicciones_over_sampling.csv", row.names = FALSE)
+
+```
+
+Se realizó un balanceo de clases en el conjunto de datos mediante over-sampling de la clase minoritaria usando la librería ROSE, incrementando sus instancias hasta un tamaño cercano al de la clase mayoritaria. Este balanceo ayuda a que el modelo no esté sesgado hacia la clase más frecuente, logrando una representación equitativa de ambas clases.
+
+Posteriormente, se entrenó un modelo Random Forest con 2000 árboles utilizando los datos balanceados, lo que permite un aprendizaje más robusto de ambas clases. El modelo fue evaluado en un conjunto de prueba, y los resultados fueron exportados para análisis adicional.
+
+## Over Sampling versión 2
+
+Se volverá a realizar un over-sampling pero en este caso se quitaran todas las especies que tengan menos de 50 árboles. Luego, nos quedaremos solo con las columnas **especie**, **long**, **lat**, **circ_tronco_cm** e **inclinacion_peligrosa** y se aplicará random forest generando 3500 árboles, además se realizará un over-sampling ligeramente mayor que en el anterior caso.
+
+```{r}
+# Instalar e importar el paquete ROSE
+#install.packages("ROSE")  # Si no está instalado
+library(ROSE)  # Cargar el paquete
+library(dplyr)
+library(randomForest)
+
+# Filtramos el dataset para que solo contenga especies con al menos 50 árboles
+conteo_especies <- datos_seleccionados %>%
+  count(especie)
+
+especies_filtradas <- conteo_especies %>%
+  filter(n >= 50) %>%
+  pull(especie)
+
+# Filtramos el dataset para quedarnos solo con las especies seleccionadas
+datos_filtrados <- datos_seleccionados %>%
+  filter(especie %in% especies_filtradas)
+
+# Seleccionamos las columnas relevantes
+datos_reducidos <- datos_filtrados %>%
+  select(especie, long, lat, circ_tronco_cm, inclinacion_peligrosa)
+
+# Filtrar el dataset de prueba para que solo tenga las columnas relevantes, incluyendo el 'id'
+datos_prueba_reducido <- datos_prueba %>%
+  select(id, especie, long, lat, circ_tronco_cm)
+
+# Verificar el número de instancias de cada clase
+datos_clase_0 <- datos_reducidos %>% filter(inclinacion_peligrosa == 0)
+datos_clase_1 <- datos_reducidos %>% filter(inclinacion_peligrosa == 1)
+print(paste("Clase 0: ", nrow(datos_clase_0)))  # Clase mayoritaria
+print(paste("Clase 1: ", nrow(datos_clase_1)))  # Clase minoritaria
+
+# Aumento de la clase minoritaria
+N_valor <- nrow(datos_clase_1) * 13
+
+# Realizar el over-sampling usando ROSE (aumentando solo la clase minoritaria)
+datos_over_sampling_v2 <- ovun.sample(inclinacion_peligrosa ~ ., data = datos_reducidos, method = "over", N = N_valor)$data
+
+# Verificar el nuevo balance de clases
+print(table(datos_over_sampling$inclinacion_peligrosa))
+
+# Entrenar el modelo Random Forest con los datos balanceados
+modelo_rf_over_sampling_v2 <- randomForest(inclinacion_peligrosa ~ ., data = datos_over_sampling_v2, importance = TRUE, ntree = 3500)
+
+importancia <- importance(modelo_rf_over_sampling_v2)
+varImpPlot(modelo_rf_over_sampling)
+
+```
+
+```{r}
+# Realizar predicciones en el dataset de prueba
+predicciones <- predict(modelo_rf_over_sampling_v2, newdata = datos_prueba_reducido)
+
+# Crear un data frame con los resultados: 'id' y 'inclinacion_peligrosa'
+resultados <- data.frame(id = datos_prueba_reducido$id, inclinacion_peligrosa = predicciones)
+
+# Guardar las predicciones en un archivo CSV
+write.csv(resultados, "predicciones_over_sampling_v2.csv", row.names = FALSE)
+
+```
+
+```{r}
+importancia <- importance(modelo_rf_over_sampling_v2)
+varImpPlot(modelo_rf_over_sampling)
+```
